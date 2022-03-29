@@ -19,12 +19,23 @@ module happy_verilog_tb;
     parameter n = 4, delay = 5;
 
     reg[n - 1 : 0] i;
+    wire o_b;
+
+    happy_verilog_B hvb(i, o_b);
+
+    wire helper_b;
+
+    happy_verilog_tb_helper hvb_helper(o_b, i, helper_b);
 
     initial begin
         i = 1'b0;
         repeat (16) begin
             #delay;
-            $display("time = %4d, i = %b", $time, i);
+            $display("time = %4d, i = %b, o_b = %b", $time, i, o_b);
+            if (helper_b) begin
+                $display("WA");
+                $finish;
+            end
             i = i + 1'b1;
         end
         $display("AC");
