@@ -40,3 +40,15 @@ module happy_verilog_G(i, o);
     or(o, and_0, and_1, and_2);
 
 endmodule
+
+
+module happy_verilog_D(i, o);
+
+    parameter n = 4;
+
+    input[n - 1 : 0] i;
+    output o;
+
+    assign o = !i[3] & !i[2] | i[2] & !i[1] & i[0] | !i[2] & !i[1] & !i[0];
+
+endmodule
