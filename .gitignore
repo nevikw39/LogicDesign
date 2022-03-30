@@ -1,3 +1,8 @@
 */INCA_libs/*
 *.history
 *.log
+
+*.DS_Store
+
+*.aux
+*.synctex.gz
