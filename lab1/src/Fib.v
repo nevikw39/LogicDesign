@@ -1,19 +1,19 @@
-module happy_verilog_B(i, o);
+module Fib_B(in, out);
 
     parameter n = 4;
 
-    input[n - 1 : 0] i;
-    output o;
+    input[n - 1 : 0] in;
+    output out;
 
-    reg o;
+    reg out;
 
     always @(*) begin
-        case (i)
+        case (in)
             0, 1, 2, 3, 5, 8, 13: begin
-                o = 1'b1;
+                out = 1'b1;
             end
             default: begin
-                o = 1'b0;
+                out = 1'b0;
             end
         endcase
     end
@@ -21,34 +21,34 @@ module happy_verilog_B(i, o);
 endmodule
 
 
-module happy_verilog_G(i, o);
+module Fib_D(in, out);
 
     parameter n = 4;
 
-    input[n - 1 : 0] i;
-    output o;
+    input[n - 1 : 0] in;
+    output out;
 
-    wire not_a, not_b, not_c, not_d, and_0, and_1, and_2;
-
-    not(not_a, i[3]);
-    not(not_b, i[2]);
-    not(not_c, i[1]);
-    not(not_d, i[0]);
-    and(and_0, not_a, not_b);
-    and(and_1, i[2], not_c, i[0]);
-    and(and_2, not_b, not_c, not_d);
-    or(o, and_0, and_1, and_2);
+    assign out = !in[3] & !in[2] | in[2] & !in[1] & in[0] | !in[2] & !in[1] & !in[0];
 
 endmodule
 
 
-module happy_verilog_D(i, o);
+module Fib_G(in, out);
 
     parameter n = 4;
 
-    input[n - 1 : 0] i;
-    output o;
+    input[n - 1 : 0] in;
+    output out;
 
-    assign o = !i[3] & !i[2] | i[2] & !i[1] & i[0] | !i[2] & !i[1] & !i[0];
+    wire not_a, not_b, not_c, not_d, and_0, and_1, and_2;
+
+    not(not_a, in[3]);
+    not(not_b, in[2]);
+    not(not_c, in[1]);
+    not(not_d, in[0]);
+    and(and_0, not_a, not_b);
+    and(and_1, in[2], not_c, in[0]);
+    and(and_2, not_b, not_c, not_d);
+    or(out, and_0, and_1, and_2);
 
 endmodule
