@@ -1,11 +1,22 @@
 module CLA4bit(A, B, Cin, S, Cout);
 
 	parameter n = 4;
-	input [n - 1: 0] A, B;
+	input [n - 1 : 0] A, B;
 	input Cin;
 	
-	output [n - 1: 0] S;
+	wire [n - 1 : 0] g, p, c;
+	assign g = A & B;
+	assign p = A ^ B;
+	assign c[0] = Cin;
+	assign c[1] = g[0] | p[0] & g[0];
+	assign c[2] = g[1] | p[1] & g[0] | p[1] & p[0] & c[0];
+	assign c[3] = g[2] | p[2] & g[1] | p[2] & p[1] & g[0] | p[2] & p[1] & p[0] & c[0];
+
+	output [n - 1 : 0] S;
 	output Cout;
+
+	assign S = P ^ C;
+	assign Cout = g[3] | p[3] & g[2] | p[3] & p[2] & g[1] | p[3] & p[2] & p[1] & g[0] | p[3] & p[2] & p[1] & p[0] & c[0];
 
 endmodule
 
