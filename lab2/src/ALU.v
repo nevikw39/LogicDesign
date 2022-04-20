@@ -15,7 +15,7 @@ module CLA4bit(A, B, Cin, S, Cout);
 	output [n - 1 : 0] S;
 	output Cout;
 
-	assign S = P ^ C;
+	assign S = p ^ c;
 	assign Cout = g[3] | p[3] & g[2] | p[3] & p[2] & g[1] | p[3] & p[2] & p[1] & g[0] | p[3] & p[2] & p[1] & p[0] & c[0];
 
 endmodule
