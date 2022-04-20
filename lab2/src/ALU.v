@@ -25,11 +25,14 @@ module Adder16bit(A, B, Cin, S, Cout);
 	parameter n = 16;
 	parameter m = 4;
 
-	input [n - 1: 0] A, B;
+	input [n - 1 : 0] A, B;
 	input Cin;
 	
-	output [n - 1: 0] S;
+	output [n - 1 : 0] S;
 	output Cout;
+
+	wire [n - 2 : 0] c;
+	CLA4bit cla0(A[3 : 0], B[3 : 0], Cin, S[3 : 0], c[0]), cla1(A[7 : 4], B[7 : 4], c[0], S[7 : 4], c[1]), cla2(A[11 : 8], B[11 : 8], c[1], S[11 : 8], c[2]), cla3(A[15 : 12], B[15 : 12], c[2], S[15 : 12], Cout);
 	
 endmodule
 
