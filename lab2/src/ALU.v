@@ -49,6 +49,8 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 	output reg Cout;
 	output reg Overflow;
 	
+	reg sa, ss;
+	Adder16bit adder(A, B, Cin, sa, Cout), suber(A, -B, ss, Cout);
 	always@(*) begin
 		case (Mode)
 			// Logical shift A left by 1-bit.
@@ -69,12 +71,10 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 			end
 			// Add two numbers with cla.
 			4'd4: begin
-				Adder16bit adder(A, B, Cin, Y, Cout);
 				Overflow = A[n - 1] & B[n - 1] & (~C[n - 1]) | (~A[n - 1]) & (~B[n - 1]) & S[n - 1];
 			end
 			// Subtract B from A.
 			4'd5: begin
-				Adder16bit adder(A, -B, Cin, Y, Cout);
 				Overflow = A[n - 1] & (-B)[n - 1] & (~C[n - 1]) | (~A[n - 1]) & (~(-B)[n - 1]) & S[n - 1];
 			end
 			// and
