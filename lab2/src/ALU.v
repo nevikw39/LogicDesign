@@ -60,7 +60,7 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 			end
 			// Arithmetic shift A left by 1-bit.
 			4'd1: begin
-				Y = A <<< 1'b1;
+				Y = A <<< 1'b1 | (A[n - 1] << n - 1);
 			end
 			// Logical shift A right by 1-bit.
 			4'd2: begin
@@ -68,7 +68,7 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 			end
 			// Arithmetic shift A right by 1-bit.
 			4'd3: begin
-				Y = A >>> 1'b1;
+				Y = A >>> 1'b1 | (A[n - 1] << n - 1);
 			end
 			// Add two numbers with cla.
 			4'd4: begin
