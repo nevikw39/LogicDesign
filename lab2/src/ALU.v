@@ -72,11 +72,13 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 			end
 			// Add two numbers with cla.
 			4'd4: begin
-				Overflow = A[n - 1] & B[n - 1] & (~C[n - 1]) | (~A[n - 1]) & (~B[n - 1]) & S[n - 1];
+				Y = sa;
+				Overflow = A[n - 1] & B[n - 1] & (~sa[n - 1]) | (~A[n - 1]) & (~B[n - 1]) & sa[n - 1];
 			end
 			// Subtract B from A.
 			4'd5: begin
-				Overflow = A[n - 1] & b[n - 1] & (~C[n - 1]) | (~A[n - 1]) & (~b[n - 1]) & S[n - 1];
+				Y = ss;
+				Overflow = A[n - 1] & b[n - 1] & (~ss[n - 1]) | (~A[n - 1]) & (~b[n - 1]) & ss[n - 1];
 			end
 			// and
 			4'd6: begin
