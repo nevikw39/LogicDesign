@@ -46,19 +46,11 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 	input [m - 1 : 0] Mode;	
 
 	output reg [n - 1 : 0] Y;
-<<<<<<< HEAD
-	output reg Cout;
-	output reg Overflow;
-	
-	wire [n - 1 : 0] b = -B;
-	reg [n - 1 : 0] sa, ss;
-=======
 	output Cout;
 	output reg Overflow;
 	
 	wire [n - 1 : 0] b, sa, ss;
 	assign b = -B;
->>>>>>> 91da2285ff8a25014d69c79fd15c23ad60be688e
 	Adder16bit adder(A, B, Cin, sa, Cout), suber(A, b, Cin, ss, Cout);
 	always@(*) begin
 		case (Mode)
@@ -133,21 +125,22 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 			4'd15: begin
 				casex (A)
 					16'b0000000000000000: Y = 16'd0;
-					16'b0000000000000001: Y = 16'd1;
-					16'b000000000000001x: Y = 16'd2;
-					16'b00000000000001xx: Y = 16'd3;
-					16'b0000000000001xxx: Y = 16'd4;
-					16'b000000000001xxxx: Y = 16'd5;
-					16'b00000000001xxxxx: Y = 16'd6;
-					16'b0000000001xxxxxx: Y = 16'd7;
-					16'b000000001xxxxxxx: Y = 16'd8;
-					16'b00000001xxxxxxxx: Y = 16'd9;
-					16'b0000001xxxxxxxxx: Y = 16'd10;
-					16'b000001xxxxxxxxxx: Y = 16'd11;
-					16'b00001xxxxxxxxxxx: Y = 16'd12;
-					16'b0001xxxxxxxxxxxx: Y = 16'd13;
-					16'b001xxxxxxxxxxxxx: Y = 16'd14;
-					16'b01xxxxxxxxxxxxxx: Y = 16'd15;
+					16'b0000000000000001: Y = 16'd0;
+					16'b000000000000001x: Y = 16'd1;
+					16'b00000000000001xx: Y = 16'd2;
+					16'b0000000000001xxx: Y = 16'd3;
+					16'b000000000001xxxx: Y = 16'd4;
+					16'b00000000001xxxxx: Y = 16'd5;
+					16'b0000000001xxxxxx: Y = 16'd6;
+					16'b000000001xxxxxxx: Y = 16'd7;
+					16'b00000001xxxxxxxx: Y = 16'd8;
+					16'b0000001xxxxxxxxx: Y = 16'd9;
+					16'b000001xxxxxxxxxx: Y = 16'd10;
+					16'b00001xxxxxxxxxxx: Y = 16'd11;
+					16'b0001xxxxxxxxxxxx: Y = 16'd12;
+					16'b001xxxxxxxxxxxxx: Y = 16'd13;
+					16'b01xxxxxxxxxxxxxx: Y = 16'd14;
+					16'b1xxxxxxxxxxxxxxx: Y = 16'd15;
 				endcase
 			end
 			default: begin
