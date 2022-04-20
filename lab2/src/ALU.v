@@ -49,7 +49,7 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 	output reg Cout;
 	output reg Overflow;
 	
-	wire b = -B;
+	wire [n - 1 : 0] b = -B;
 	reg [n - 1 : 0] sa, ss;
 	Adder16bit adder(A, B, Cin, sa, Cout), suber(A, b, ss, Cout);
 	always@(*) begin
