@@ -46,11 +46,11 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 	input [m - 1 : 0] Mode;	
 
 	output reg [n - 1 : 0] Y;
-	output reg Cout;
+	output Cout;
 	output reg Overflow;
 	
-	wire [n - 1 : 0] b = -B;
-	reg [n - 1 : 0] sa, ss;
+	wire [n - 1 : 0] b, sa, ss;
+	assign b = -B;
 	Adder16bit adder(A, B, Cin, sa, Cout), suber(A, b, Cin, ss, Cout);
 	always@(*) begin
 		case (Mode)
