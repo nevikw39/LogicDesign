@@ -51,7 +51,7 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 	
 	wire [n - 1 : 0] b = -B;
 	reg [n - 1 : 0] sa, ss;
-	Adder16bit adder(A, B, Cin, sa, Cout), suber(A, b, ss, Cout);
+	Adder16bit adder(A, B, Cin, sa, Cout), suber(A, b, Cin, ss, Cout);
 	always@(*) begin
 		case (Mode)
 			// Logical shift A left by 1-bit.
