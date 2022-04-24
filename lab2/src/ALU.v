@@ -1,10 +1,10 @@
 module CLA4bit(A, B, Cin, S, Cout);
 
 	parameter n = 4;
-	input [n - 1 : 0] A, B;
+	input signed [n - 1 : 0] A, B;
 	input Cin;
 	
-	wire [n - 1 : 0] g, p, c;
+	wire signed [n - 1 : 0] g, p, c;
 	assign g = A & B;
 	assign p = A ^ B;
 	assign c[0] = Cin;
@@ -12,7 +12,7 @@ module CLA4bit(A, B, Cin, S, Cout);
 	assign c[2] = g[1] | p[1] & g[0] | p[1] & p[0] & c[0];
 	assign c[3] = g[2] | p[2] & g[1] | p[2] & p[1] & g[0] | p[2] & p[1] & p[0] & c[0];
 
-	output [n - 1 : 0] S;
+	output signed [n - 1 : 0] S;
 	output Cout;
 
 	assign S = p ^ c;
@@ -25,10 +25,10 @@ module Adder16bit(A, B, Cin, S, Cout);
 	parameter n = 16;
 	parameter m = 4;
 
-	input [n - 1 : 0] A, B;
+	input signed [n - 1 : 0] A, B;
 	input Cin;
 	
-	output [n - 1 : 0] S;
+	output signed [n - 1 : 0] S;
 	output Cout;
 
 	wire [n - 2 : 0] c;
@@ -41,11 +41,11 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 	parameter n = 16;
 	parameter m = 4;
 	
-	input [n - 1 : 0] A, B;
+	input signed [n - 1 : 0] A, B;
 	input Cin;
 	input [m - 1 : 0] Mode;	
 
-	output reg [n - 1 : 0] Y;
+	output reg signed [n - 1 : 0] Y;
 	output Cout;
 	output reg Overflow;
 	
@@ -68,7 +68,7 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 			end
 			// Arithmetic shift A right by 1-bit.
 			4'd3: begin
-				Y = A >>> 1'b1 | (A[n - 1] << n - 1);
+				Y = A >>> 1'b1;
 			end
 			// Add two numbers with cla.
 			4'd4: begin
