@@ -46,78 +46,92 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 	input [m - 1 : 0] Mode;	
 
 	output reg signed [n - 1 : 0] Y;
-	output Cout;
+	output reg Cout;
 	output reg Overflow;
 	
 	wire [n - 1 : 0] b, sa, ss;
+	wire cout_a, cout_s;
 	assign b = -B;
-	Adder16bit adder(A, B, Cin, sa, Cout), suber(A, b, Cin, ss, Cout);
+	Adder16bit adder(A, B, Cin, sa, cout_a), suber(A, b, Cin, ss, cout_s);
 	always@(*) begin
 		case (Mode)
 			// Logical shift A left by 1-bit.
 			4'd0: begin
 				Y = A << 1'b1;
 				Overflow = 1'b0;
+				Cout = 1'b0;
 			end
 			// Arithmetic shift A left by 1-bit.
 			4'd1: begin
 				Y = A <<< 1'b1;
 				Overflow = 1'b0;
+				Cout = 1'b0;
 			end
 			// Logical shift A right by 1-bit.
 			4'd2: begin
 				Y = A >> 1'b1;
 				Overflow = 1'b0;
+				Cout = 1'b0;
 			end
 			// Arithmetic shift A right by 1-bit.
 			4'd3: begin
 				Y = A >>> 1'b1;
 				Overflow = 1'b0;
+				Cout = 1'b0;
 			end
 			// Add two numbers with cla.
 			4'd4: begin
 				Y = sa;
 				Overflow = A[n - 1] & B[n - 1] & (~sa[n - 1]) | (~A[n - 1]) & (~B[n - 1]) & sa[n - 1];
+				Cout = cout_a;
 			end
 			// Subtract B from A.
 			4'd5: begin
 				Y = ss;
 				Overflow = (~A[n - 1]) & B[n - 1] & ss[n - 1] | A[n - 1] & (~B[n - 1]) & (~ss[n - 1]);
+				Cout = cout_s;
 			end
 			// and
 			4'd6: begin
 				Y = A & B;
 				Overflow = 1'b0;
+				Cout = 1'b0;
 			end
 			// or
 			4'd7: begin
 				Y = A | B;
 				Overflow = 1'b0;
+				Cout = 1'b0;
 			end
 			// not A
 			4'd8: begin
 				Y = ~A;
 				Overflow = 1'b0;
+				Cout = 1'b0;
 			end
 			// xor
 			4'd9: begin
 				Y = A ^ B;
 				Overflow = 1'b0;
+				Cout = 1'b0;
 			end
 			// xnor
 			4'd10: begin
 				Y = ~(A ^ B);
 				Overflow = 1'b0;
+				Cout = 1'b0;
 			end
 			// nor
 			4'd11: begin
 				Y = ~(A | B);
 				Overflow = 1'b0;
+				Cout = 1'b0;
 			end
 			// binary to one-hot
 			4'd12: begin
 				Y = 1 << (A[3 : 0]);
 				Overflow = 1'b0;
+				Cout = 1'b0;
 			end
 			// Comparator
 			4'd13: begin
@@ -128,11 +142,13 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 					Y = 16'd1;
 				end
 				Overflow = 1'b0;
+				Cout = 1'b0;
 			end
 			// B
 			4'd14: begin
 				Y = B;
 				Overflow = 1'b0;
+				Cout = 1'b0;
 			end
 			// find first one from left
 			4'd15: begin
@@ -156,10 +172,12 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 					16'b1xxxxxxxxxxxxxxx: Y = 16'd15;
 				endcase
 				Overflow = 1'b0;
+				Cout = 1'b0;
 			end
 			default: begin
 				Y = 16'b0;
 				Overflow = 1'b0;
+				Cout = 1'b0;
 			end
 		endcase
 	end
