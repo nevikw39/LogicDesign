@@ -82,7 +82,7 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 			// Subtract B from A.
 			4'd5: begin
 				Y = ss;
-				Overflow = A[n - 1] & b[n - 1] & (~ss[n - 1]) | (~A[n - 1]) & (~b[n - 1]) & ss[n - 1];
+				Overflow = (~A[n - 1]) & B[n - 1] & ss[n - 1] | A[n - 1] & (~B[n - 1]) & (~ss[n - 1]);
 			end
 			// and
 			4'd6: begin
