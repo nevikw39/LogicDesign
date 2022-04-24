@@ -8,7 +8,7 @@ module CLA4bit(A, B, Cin, S, Cout);
 	assign g = A & B;
 	assign p = A ^ B;
 	assign c[0] = Cin;
-	assign c[1] = g[0] | p[0] & g[0];
+	assign c[1] = g[0] | p[0] & c[0];
 	assign c[2] = g[1] | p[1] & g[0] | p[1] & p[0] & c[0];
 	assign c[3] = g[2] | p[2] & g[1] | p[2] & p[1] & g[0] | p[2] & p[1] & p[0] & c[0];
 
