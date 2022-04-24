@@ -1,10 +1,10 @@
 module CLA4bit(A, B, Cin, S, Cout);
 
 	parameter n = 4;
-	input signed [n - 1 : 0] A, B;
+	input [n - 1 : 0] A, B;
 	input Cin;
 	
-	wire signed [n - 1 : 0] g, p, c;
+	wire [n - 1 : 0] g, p, c;
 	assign g = A & B;
 	assign p = A ^ B;
 	assign c[0] = Cin;
@@ -12,7 +12,7 @@ module CLA4bit(A, B, Cin, S, Cout);
 	assign c[2] = g[1] | p[1] & g[0] | p[1] & p[0] & c[0];
 	assign c[3] = g[2] | p[2] & g[1] | p[2] & p[1] & g[0] | p[2] & p[1] & p[0] & c[0];
 
-	output signed [n - 1 : 0] S;
+	output [n - 1 : 0] S;
 	output Cout;
 
 	assign S = p ^ c;
@@ -25,10 +25,10 @@ module Adder16bit(A, B, Cin, S, Cout);
 	parameter n = 16;
 	parameter m = 4;
 
-	input signed [n - 1 : 0] A, B;
+	input [n - 1 : 0] A, B;
 	input Cin;
 	
-	output signed [n - 1 : 0] S;
+	output [n - 1 : 0] S;
 	output Cout;
 
 	wire [n - 2 : 0] c;
@@ -45,7 +45,7 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 	input Cin;
 	input [m - 1 : 0] Mode;	
 
-	output reg signed [n - 1 : 0] Y;
+	output reg [n - 1 : 0] Y;
 	output reg Cout;
 	output reg Overflow;
 	
@@ -54,7 +54,7 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 	assign b = -B;
 	reg cin = 0;
 	Adder16bit adder(A, B, Cin, sa, cout_a), suber(A, b, cin, ss, cout_s);
-	
+
 	always@(*) begin
 		case (Mode)
 			// Logical shift A left by 1-bit.
