@@ -3,14 +3,12 @@ nc = ncverilog
 
 nc_option = +access+r
 
-assignment_name = ALU
-
 # The file name of testbench.
-tb = tests/$(assignment_name)_tb.v
+tb = tests/ALU_tb.v
 
 # The file name of our modules.
-others = src/$(assignment_name).v
-others_syn = $(assignment_name)_syn.v -v /theda21_2/CBDK_IC_Contest/cur/Verilog/tsmc13.v
+others = src/ALU.v
+others_syn = build/ALU_syn.v -v /theda21_2/CBDK_IC_Contest/cur/Verilog/tsmc13.v
 
 sdf = +define+SDF
 
@@ -29,7 +27,7 @@ make::sim
 sim:
 	$(nc) $(srcs)
 
-syn: compile
+syn: build/ALU_syn.v
 	$(nc) $(srcs_syn) $(sdf)
 
 check:
@@ -45,3 +43,5 @@ clean:
 all: check sim syn clean
 
 .PHONY: sim syn check compile clean all
+
+build/ALU_syn.v: compile

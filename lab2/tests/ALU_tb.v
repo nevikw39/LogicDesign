@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-`define SDFFILE "./ALU.sdf"
+`define SDFFILE "build/ALU.sdf"
 
 module tb();
 
