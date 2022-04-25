@@ -49,11 +49,9 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 	output reg Cout;
 	output reg Overflow;
 	
-	wire [n - 1 : 0] b, sa, ss;
+	wire [n - 1 : 0] sa, ss;
 	wire cout_a, cout_s;
-	assign b = -B;
-	reg cin = 0;
-	Adder16bit adder(A, B, Cin, sa, cout_a), suber(A, b, cin, ss, cout_s);
+	Adder16bit adder(A, B, Cin, sa, cout_a), suber(A, -B, 0, ss, cout_s);
 
 	always@(*) begin
 		case (Mode)
@@ -84,13 +82,13 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 			// Add two numbers with cla.
 			4'd4: begin
 				Y = sa;
-				Overflow = A[n - 1] & B[n - 1] & (~sa[n - 1]) | (~A[n - 1]) & (~B[n - 1]) & sa[n - 1];
+				Overflow = A[n - 1] & B[n - 1] & ~sa[n - 1] | ~A[n - 1] & ~B[n - 1] & sa[n - 1];
 				Cout = cout_a;
 			end
 			// Subtract B from A.
 			4'd5: begin
 				Y = ss;
-				Overflow = (~A[n - 1]) & B[n - 1] & ss[n - 1] | A[n - 1] & (~B[n - 1]) & (~ss[n - 1]);
+				Overflow = ~A[n - 1] & B[n - 1] & ss[n - 1] | A[n - 1] & ~B[n - 1] & ~ss[n - 1];
 				Cout = cout_s;
 			end
 			// and
@@ -183,4 +181,5 @@ module ALU(A, B, Cin, Mode, Y, Cout, Overflow);
 			end
 		endcase
 	end
+
 endmodule
