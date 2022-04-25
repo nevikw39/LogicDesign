@@ -1,0 +1,112 @@
+\documentclass[12pt, a4paper]{article}
+
+\title{\textsc{Logic Design} Lab 2: \textsf{ALU} Report}
+\author{110062219}
+\date{\today}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{circuitikz}
+\usepackage{karnaugh-map}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{graphs}
+\usetikzlibrary{calc}
+
+\begin{document}
+
+\maketitle
+
+\section{Design}
+
+We are to carry out a 4-bit \textsf{carry-lookahead adder}, a 16-bit \textsf{adder} and a 16-bit \textsf{Arithematic \& Logic Unit} in the Lab 2.
+
+\subsection{4-bit \textsf{Carry-Lookahead Adder}}
+
+I used the \textbf{dataflow description} to implement my \textsf{CLA}.
+
+First I declared wire arrays $g,p,c$ of size 4 and assign $g=A\land b,p=A\oplus B$. Then the carries $c_i$ are $g_{i-1}\lor p_{i-1}\land c_{i-1}$ respectively. The expressions of $c_i$ are recursively expanded in terms of only $g_j,p_j,Cin$. Finally, we have the output $S=p\oplus c,Cout=g_3\lor p_3\land c_3$.
+
+\subsection{16-bit \textsf{Adder}}
+
+Though the course materials shows that we could have a 16-bit \textsf{adder} by four 4-bit \textsf{CLA}s in hierarchical manner, the spec of out \textsf{CLA} does not include the group generate and the group propagate.
+
+As a consequence, I serialized four 4-bit \textsf{CLA}s just as what a ripple-carry adder is done.
+
+\subsection{16-bit \textsf{Arithematic \& Logic Unit}}
+
+Here comes the most interesting and surprising part. I implemented a very basic \textsf{ALU} which lies in every CPU!
+
+Since we have 16 different operations, I used a \texttt{always-case} block to perform as a multiplexer and declared the outputs to be registers. In case of generating unexpected latches, The value of each output is set even if it is don't-care.
+
+\subsubsection{Addition \& Subtraction}
+
+First I declared two wire arrays $s_a,s_s$ of size 16 to store the result of $adder$ and $suber$ and two wires $cout_a,cout_s$ to store the carry-out of $adder$ and $suber$.
+
+Then I declared two 16-bit \textsf{adder} $adder(A,B,Cin,s_a,cout_a)$ and\linebreak$suber(A,-B,0,s_s,cout_s)$.
+
+Finally in the cases of addition and subtraction, $Y$ is assigned to $s_a,s_s$ and $Cout$ to $cout_a,cout_s$ respectively. As for $Overflow$, it is $$A_{15}\land B_{15}\land\lnot Y_{15}\lor\lnot A_{15}\land\lnot B_{15}\land Y_{15}$$ for addition and $$\lnot A_{15}\land B_{15}\land Y_{15}\lor A_{15}\land\lnot B_{15}\land\lnot Y_{15}$$ for subtraction.
+
+\subsubsection{\texttt{Find-First-Set}}
+
+For the last operation to find the first set bit from the higher side, I used a \texttt{casex} block to brute-force enumerate all 17 cases.
+
+I was confused what should I output when there is no set bit, i.e., the input is 0. After some search on the Internet, I realized that \texttt{FFS} usually return 0 whereas \texttt{count-leading-zeros} (\texttt{\_\_builtin\_clz()}, called by \texttt{std::\_\_lg()}) sometimes return the size of the integer type.
+
+\subsubsection{Comparator}
+
+I used a \texttt{if-else} branch.
+
+\subsubsection{Decoder}
+
+I used this expression $Y = 1 << A_{3:0}$.
+
+\subsubsection{Other Operations}
+
+For logical and arithmetic, left and right shift; bitwise and, or, exclusive-or, not operations, I used \texttt{verilog} operators directy.
+
+\section{Problems}
+
+It's definitely not an easy lab for a beginner of hardware like me. I encountered several problems.
+
+Some of them is so stupid. For instance, I made a typo that mistook $c_1=g_0\lor p_0\land c_0$ for $c_1=g_0\lor p_0\land g_0$ in my \texttt{CLA}, which cost my plenty of time not until I wrote a test bench did I find it.
+
+\subsection{Signed and Unsigned Numbers}
+
+Another problem occurred when comparing two integers. I found that my \texttt{ALU} had trouble comparing negative numbers. After declaring input with \texttt{signed}, it worked properly.
+
+Later, I saw another approach is to use \texttt{\$signed($x$)} of a variable $x$ in the test bench provided by TAs.
+
+\subsection{Wire Connected Multiple Times}
+
+In the beginning, some result of test bench showed that my $Cout$s were \texttt{x}. I was really frustrated then. I checked the $Cout$s of both \texttt{CLA} and \texttt{adder} various times.
+
+Subsequently, I was skeptical about my \texttt{ALU} and I found that I had connected wire $Cout$ to both $adder$ and $suber$! So I declared $Cout$ to be a register and another two wires $cout_a,cout_a$ connected to the two adders.
+
+\subsection{Carry-in of Subtraction}
+
+There were only three \textbf{WA} test cases then, which were all subtractions with $Cin=1$.
+
+I found that the odd-even parity was weird. For instance, the correct answer of an even number subtracts another even number with $Cin=1$ is also even, rather than odd as I expected. Until reading our spec cautiously, I found that $Cin$ is don't-care!
+
+So I got \textbf{AC} finally!
+
+\section{Questions and Reflection}
+
+Although I've finished this lab, I still have some questions:
+
+\begin{enumerate}
+\item In my \textsf{CLA}, I expanded $c_i$ in terms of only $g_j,p_j,Cin$. For instance, $c_2=g_1\lor p_1\land c_1=g_1\lor p_1\land g_0\lor p_1\land p_0\land Cin$. What if I just assign $c_2=g_1\lor p_1\land c_1$? Would \texttt{ncverilog} expand it automatically, or would it decline to a ripple-carry adder?
+\item I couldn't \texttt{make compile}. \texttt{make} said that ``dv: Command not found'', but in my current shell, \texttt{which dv} showed that ``aliased to design\_vision''.
+\item The professor told us parameterized module in class. If we want to implement out \textsf{CLA} and \textsf{adder} in that way, how could we do that? Can we use a loop to declare something inside a module?
+\end{enumerate}
+
+By the way, it's really nice for you to provide many files for us. I modified the directory structure to put my source file in \texttt{src/}, test benches in \texttt{tests/} and our targets in \texttt{build/}. I tried to modify \texttt{Makefile} to let it more like a Makefile but in vain, though.
+
+I 'm interested in \texttt{ALU.tcl} the most. I heard of \texttt{Tcl} when I learnt the GUI framework Tk used by Python. It's so cool to control the GUI by command line, but I'm wondering why there is not a command to synthesis.
+
+After all, despite the difficulty of this lab, I found sense of achievement and satisfaction after synthesis the module and pass the test bench successfully.
+
+\end{document}
