@@ -15,7 +15,7 @@ module PAT(clk, reset, data, flag);
 				B: next = data ? C : B;
 				C: next = data ? A : D;
 				D: next = data ? E : B;
-				E: next = data ? C : F;
+				E: next = data ? A : F;
 				F: next = data ? G : B;
 				G: next = data ? H : F;
 				H: next = data ? I : F;
