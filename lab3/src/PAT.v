@@ -24,12 +24,6 @@ module PAT(clk, reset, data, flag);
 
 	assign flag = !reset && state == I;
 
-	// always @(*)
-	//	if (!reset && state == H && data)
-	//		flag = 1'b1;
-	//	else
-	//		flag = 1'b0;
-
 	always @(posedge clk)
 		if (reset)
 			state <= A;
