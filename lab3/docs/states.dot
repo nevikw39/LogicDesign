@@ -1,0 +1,32 @@
+digraph {
+    A0[shape=none];
+    I8[shape=doublecircle];
+
+    A0->B1[label="0"]
+    B1->C2[label="1"]
+    C2->D3[label="0"]
+    D3->E4[label="1"]
+    E4->F5[label="0"]
+    F5->G6[label="1"]
+    G6->H7[label="1"]
+    H7->I8[label="1"]
+
+    edge[weight=0]
+    H7->J9[label="0"]
+    J9->K10[label="1"]
+    K10->H7[label="1"]
+
+
+    edge[style=dashed]
+    A0->A0[label="1"]
+    B1->B1[label="0"]
+    C2->A0[label="1"]
+    D3->B1[label="0"]
+    E4->A0[label="1"]
+    F5->B1[label="0"]
+    G6->F5[label="0"]
+    I8->A0[label="1"]
+    I8->B1[label="0"]
+    J9->B1[label="0"]
+    K10->D3[label="0"]
+}
