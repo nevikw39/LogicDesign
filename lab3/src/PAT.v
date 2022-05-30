@@ -3,7 +3,7 @@ module PAT(clk, reset, data, flag);
 	input clk, reset, data;
 	output flag;
 
-	parameter A = 4'd0, B = 4'd1, C = 4'd2, D = 4'd3, E = 4'd4, F = 4'd5, G = 4'd6, H = 4'd7, I = 4'd8;
+	parameter A = 4'd0, B = 4'd1, C = 4'd2, D = 4'd3, E = 4'd4, F = 4'd5, G = 4'd6, H = 4'd7, I = 4'd8, J = 4'd9, K = 4'd10;
 	reg[3 : 0] state, next;
 
 	always @(*)
@@ -18,8 +18,10 @@ module PAT(clk, reset, data, flag);
 				E: next = data ? A : F;
 				F: next = data ? G : B;
 				G: next = data ? H : F;
-				H: next = data ? I : F;
+				H: next = data ? I : J;
 				I: next = data ? A : B;
+				J: next = data ? K : B;
+				K: next = data ? H : D;
 			endcase
 
 	assign flag = !reset && state == I;
