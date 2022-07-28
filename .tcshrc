@@ -1,0 +1,3 @@
+if ($HOST != "nthucad" && `where ncverilog` == "") then
+    source /etc/csh.login
+endif
