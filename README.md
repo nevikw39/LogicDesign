@@ -15,21 +15,21 @@ I personally perfer to connect to the workstation by **VS Code** with _Remote SS
   # login node
   Host cad
     Hostname nthucad.cs.nthu.edu.tw
-    User u<your student ID>
+    User u<student ID>
   
   Host cad_ic21
     Hostname ic21
     ProxyJump cad         # We have to connect to the node via login node
-    User u<your student ID>
+    User u<student ID>
     ForwardX11Trusted yes # In case you need to open `nWave` or `Design Vision`, etc.
   
   Host cad_ic22
     Hostname ic22
     ProxyJump cad
-    User u<your student ID>
-    ForwardX11Trusted ye
+    User u<student ID>
+    ForwardX11Trusted yes
   ```
-2. Add [.tcshrc](.tcshrc) to your home directory in the workstation. This patch is required because either **VS Code** doesn't `source` the login script or it doesn't `export` _environment variables_ to interactive terminals.
+2. Add [.tcshrc](.tcshrc) to your home directory in the workstation. This patch is required because either **VS Code** doesn't `source` the login script or it doesn't `export` _environment variables_ to interactive terminals. Make sure **VS Code** take `tcsh` as default terminal (at least for the workspace).
 3. Now you can connect to `cad_ic21` or `cad_ic22` in **VS Code** and find that `ncverilog` works!
 
 ## Lab Assignments
@@ -39,3 +39,5 @@ I personally perfer to connect to the workstation by **VS Code** with _Remote SS
 | 1 | [Fibonacci Number Detector](lab1/docs/report.pdf) | 96 |
 | 2 | [ALU and Carry-Lookahead Adder](lab2/docs/report.pdf) | 96 |
 | 3 | [Pattern Matching](lab3/docs/report.pdf) | 98 |
+
+Makefiles are modified base on the ones provided by the TAs.
